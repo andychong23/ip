@@ -11,6 +11,9 @@ public class EventTaskTest {
     static EventTask dateTimeEventTaskOne;
     static EventTask dateTimeEventTaskTwo;
 
+    /**
+     * Initial set up of test conditions
+     */
     @BeforeAll
     public static void setUp() {
         dateEventTaskOne = new EventTask("test", "12/12", "14/12");
@@ -21,6 +24,9 @@ public class EventTaskTest {
         dateEventTaskOne.setTaskDone(true);
     }
 
+    /**
+     * Tests for formatting of getDeadLine
+     */
     @Test
     public void test_GetDeadline() {
         assertEquals("14 Dec 2025", dateEventTaskOne.getDeadLine());
@@ -29,6 +35,9 @@ public class EventTaskTest {
         assertEquals("14 Dec 2026", dateTimeEventTaskTwo.getDeadLine());
     }
 
+    /**
+     * Tests for formatting of getStartDateTime
+     */
     @Test
     public void test_GetStartDateTime() {
         assertEquals("12 Dec 2025", dateEventTaskOne.getStartDateTime());
@@ -37,6 +46,9 @@ public class EventTaskTest {
         assertEquals("12 Dec 2025 09:00am", dateTimeEventTaskTwo.getStartDateTime());
     }
 
+    /**
+     * Tests for formatting of createSaveData
+     */
     @Test
     public void test_CreateSaveData() {
         assertEquals("E|1|test|/from 12/12/2025 /to 14/12/2025", dateEventTaskOne.createSaveData());
@@ -45,6 +57,9 @@ public class EventTaskTest {
         assertEquals("E|0|test|/from 12/12/2025 09:00 /to 14/12/2026", dateTimeEventTaskTwo.createSaveData());
     }
 
+    /**
+     * Tests for formatting of getTaskInformation
+     */
     @Test
     public void test_GetTaskInformation() {
         assertEquals("[E] [X] test (from: 12 Dec 2025 to: 14 Dec 2025)", dateEventTaskOne.getTaskInformation());

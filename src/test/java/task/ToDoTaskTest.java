@@ -9,6 +9,9 @@ public class ToDoTaskTest {
     static ToDoTask toDoTaskOne;
     static ToDoTask toDoTaskTwo;
 
+    /**
+     * Initial set up of test conditions
+     */
     @BeforeAll
     public static void setUp() {
         toDoTaskOne = new ToDoTask("test");
@@ -17,12 +20,18 @@ public class ToDoTaskTest {
         toDoTaskOne.setTaskDone(true);
     }
 
+    /**
+     * Test for formatting of createSaveData
+     */
     @Test
     public void test_CreateSaveData() {
         assertEquals("T|1|test", toDoTaskOne.createSaveData());
         assertEquals("T|0|get apples", toDoTaskTwo.createSaveData());
     }
 
+    /**
+     * Test for formatting of getTaskInformation
+     */
     @Test
     public void test_GetTaskInformation() {
         assertEquals("[T] [X] test", toDoTaskOne.getTaskInformation());
