@@ -109,7 +109,7 @@ public class InputValidatorTest {
             "event sleep /from 04/02 /to 04/02, false",
             "event sleep /from 04/02 /to 03/02, false",
             "event sleep /from 11/11 /to 12/12 12:00, true",
-            "event /from 11/11 /to 12/12, true"
+            "event /from 11/11 /to 12/12, false"
     })
     public void test_IsEventInputValid(String userInput, boolean expected) {
         assertEquals(expected, InputValidator.isInputValid(userInput, user).isValid());
