@@ -132,6 +132,12 @@ public class ValidationToken {
                         "after /from and /to but received something different";
             }
         },
+        EVENT_MISSING_EVENT_INFO {
+            @Override
+            public String getErrorMessage() {
+                return "event expects an argument before /from to indicate what is the event name";
+            }
+        },
         DELETE_TOO_MANY_ARGUMENTS() {
             @Override
             public String getErrorMessage() {
