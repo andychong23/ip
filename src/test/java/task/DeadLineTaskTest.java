@@ -11,6 +11,9 @@ public class DeadLineTaskTest {
     static DeadLineTask dateTimeDeadLineTaskOne;
     static DeadLineTask dateTimeDeadLineTaskTwo;
 
+    /**
+     * Initial set up of test conditions
+     */
     @BeforeAll
     public static void setUp() {
         dateDeadLineTaskOne = new DeadLineTask("test", "12/12");
@@ -21,6 +24,9 @@ public class DeadLineTaskTest {
         dateDeadLineTaskOne.setTaskDone(true);
     }
 
+    /**
+     * Tests for formatting of getDeadLine
+     */
     @Test
     public void test_GetDeadline() {
         assertEquals("12 Dec 2025", dateDeadLineTaskOne.getDeadLine());
@@ -29,6 +35,9 @@ public class DeadLineTaskTest {
         assertEquals("12 Dec 2025 09:00am", dateTimeDeadLineTaskTwo.getDeadLine());
     }
 
+    /**
+     * Tests for formatting of createSaveData
+     */
     @Test
     public void test_CreateSaveData() {
         assertEquals("D|1|test|/by 12/12/2025", dateDeadLineTaskOne.createSaveData());
@@ -37,6 +46,9 @@ public class DeadLineTaskTest {
         assertEquals("D|0|test|/by 12/12/2025 09:00", dateTimeDeadLineTaskTwo.createSaveData());
     }
 
+    /**
+     * Tests for formatting of getTaskInformation
+     */
     @Test
     public void test_GetTaskInformation() {
         assertEquals("[D] [X] test (by: 12 Dec 2025)", dateDeadLineTaskOne.getTaskInformation());
