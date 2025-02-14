@@ -79,7 +79,6 @@ public class InputValidator {
             return new ValidationToken(true);
         } else if (userInputTokens.getFirst().equalsIgnoreCase(ActionHandler.Action.DEADLINE.toString())) {
 
-            System.out.println(Arrays.toString(userInputTokens.toArray()));
             if (userInputTokens.size() <= 2) {
                 return new ValidationToken(false, ValidationToken.InputError.DEADLINE_TOO_LITTLE_ARGUMENTS);
             }
@@ -138,6 +137,10 @@ public class InputValidator {
             } catch (NumberFormatException e) {
                 // second argument not a number
                 return new ValidationToken(false, ValidationToken.InputError.DELETE_INCORRECT_ARGUMENT_TYPE);
+            }
+
+            if (Integer.parseInt(userInputTokens.get(1)) <= 0 || Integer.parseInt(userInputTokens.get(1)) > user.getNumberOfTasks()) {
+                return new ValidationToken(false, ValidationToken.InputError.DELETE_ARGUMENT_DOES_NOT_EXISTS);
             }
 
             return new ValidationToken(true);

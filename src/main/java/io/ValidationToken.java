@@ -144,6 +144,12 @@ public class ValidationToken {
                 return "delete expects an integer argument but received a non-integer argument";
             }
         },
+        DELETE_ARGUMENT_DOES_NOT_EXISTS {
+            @Override
+            public String getErrorMessage() {
+                return "task number does not exists";
+            }
+        },
         INVALID_TASK_NUMBER() {
             @Override
             public String getErrorMessage() {
