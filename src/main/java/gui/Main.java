@@ -8,8 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Main extends Application{
-    private Image bobImage = new Image(this.getClass().getResourceAsStream("/images/bob.jpg"));
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/gru.jpg"));
     double minHeight = 600;
     double minWidth = 400;
 
