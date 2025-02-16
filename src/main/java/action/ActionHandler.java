@@ -23,90 +23,189 @@ public class ActionHandler {
     private RandomGenerator randomGenerator = new Random();
 
     /**
-     * Method to process events that are input to the user
-     * Precondition: eventString is already a valid input by the user
+     * Returns List of Strings that will be output to the user
+     * This method processes the actions that the user inputs accordingly
+     * Precondition: actionString is a valid input by the user
      *
-     * @param eventString Valid Input String provided by the user
+     * @param actionString Valid Input String provided by the user
      * @param user        User class that indicates the current user
      * @return List of Strings that indicates what needs to be output to the console
      */
-    public List<String> processEvent(String eventString, User user) throws IOException {
+    public List<String> processAction(String actionString, User user) throws IOException {
         List<String> outputMessages = new ArrayList<>();
 
-        List<String> eventStringTokens = Arrays.asList(eventString.split(" "));
+        List<String> actionStringTokens = Arrays.asList(actionString.split(" "));
 
-        if (eventStringTokens.getFirst().equalsIgnoreCase(Action.LIST.toString())) {
-            outputMessages.add("Here are the tasks in your list: ");
-            outputMessages.add(user.getTaskList());
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.BYE.toString())) {
-            return outputMessages;
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.MARK.toString())) {
-            outputMessages.add("Nice! I've marked this task as done:");
-            outputMessages.add(user.markTaskAsDone(parseInt(eventStringTokens.get(1)) - 1));
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.UNMARK.toString())) {
-            outputMessages.add("OK, I've marked this task as not done yet:");
-            outputMessages.add(user.markTaskAsNotDone(parseInt(eventStringTokens.get(1)) - 1));
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.TODO.toString())) {
-            outputMessages.add("Got it. I've added this todo task:");
-            Task createdTask = createTask(
-                    Action.TODO,
-                    eventStringTokens.subList(1, eventStringTokens.size())
-            );
-            user.addTask(createdTask);
-            outputMessages.add(createdTask.getTaskInformation());
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.DEADLINE.toString())) {
-            outputMessages.add("Got it. I've added this deadline:");
-            Task createdTask = createTask(
-                    Action.DEADLINE,
-                    eventStringTokens.subList(1, eventStringTokens.size())
-            );
-            user.addTask(createdTask);
-            outputMessages.add(createdTask.getTaskInformation());
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.EVENT.toString())) {
-            outputMessages.add("Got it. I've added this event:");
-            Task createdTask = createTask(
-                    Action.EVENT,
-                    eventStringTokens.subList(1, eventStringTokens.size())
-            );
-            user.addTask(createdTask);
-            outputMessages.add(createdTask.getTaskInformation());
-        } else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.DELETE.toString())) {
-            outputMessages.add("Noted. I've removed this task:");
-            outputMessages.add(user.deleteTask(parseInt(eventStringTokens.get(1)) - 1));
-            outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
-        }
-        else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.FIND.toString())) {
-            List<Task> foundTasks = user.findTaskWithKeyWord(
-                    String.join(" ", eventStringTokens.subList(1, eventStringTokens.size())));
-
-            if (foundTasks.isEmpty()) {
-                outputMessages.add("There are not tasks with that keyword in your list D:");
-            }
-            else {
-                outputMessages.add("Here are the matching tasks in your list:");
-                outputMessages.add(user.getTaskList(foundTasks));
-            }
-        }
-        else if (eventStringTokens.getFirst().equalsIgnoreCase(Action.CHEER.toString())) {
-            outputMessages.add(getCheerMessage());
+        if (actionStringTokens.getFirst().equalsIgnoreCase(Action.LIST.toString())) {
+            processListAction(user, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.MARK.toString())) {
+            processMarkAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.UNMARK.toString())) {
+            processUnmarkAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.TODO.toString())) {
+            processToDoAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.DEADLINE.toString())) {
+            processDeadlineAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.EVENT.toString())) {
+            processEventAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.DELETE.toString())) {
+             processDeleteAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.FIND.toString())) {
+            processFindAction(user, actionStringTokens, outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.CHEER.toString())) {
+            processCheerAction(outputMessages);
         }
 
-        // conditional add that indicates the new number of tasks in the list only when a new task is added
-        if (eventStringTokens.getFirst().equalsIgnoreCase(Action.EVENT.toString())
-                || eventStringTokens.getFirst().equalsIgnoreCase(Action.TODO.toString())
-                || eventStringTokens.getFirst().equalsIgnoreCase(Action.DEADLINE.toString())) {
-            outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
-        }
-
-        try {
-            DataHandler.writeFile(user.getDataFilePath(), user.createSaveData(), false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        updateSaveFile(user, false);
 
         return outputMessages;
     }
 
+    /**
+     * Adds a cheer message to outputMessages
+     * @param outputMessages List of Strings that will be shown to the user
+     * @throws IOException File read fails for the cheer messages
+     */
+    private void processCheerAction(List<String> outputMessages) throws IOException {
+        outputMessages.add(getCheerMessage());
+    }
+
+    /**
+     * Find the tasks that has the relevant keyword
+     * If tasks are found, add a numbered task list to outputMessages
+     * Note: Numbered task list provided here does not correspond to the actual task number
+     *
+     * @param user User that is requesting the find action
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processFindAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        List<Task> foundTasks = user.findTaskWithKeyWord(
+                String.join(" ", actionStringTokens.subList(1, actionStringTokens.size())));
+
+        if (foundTasks.isEmpty()) {
+            outputMessages.add("There are not tasks with that keyword in your list D:");
+        }
+        else {
+            outputMessages.add("Here are the matching tasks in your list:");
+            outputMessages.add(user.getTaskList(foundTasks));
+        }
+    }
+
+    /**
+     * Delete the task number specified by the user
+     * @param user User
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processDeleteAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        outputMessages.add("Noted. I've removed this task:");
+        outputMessages.add(user.deleteTask(parseInt(actionStringTokens.get(1)) - 1));
+        outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
+    }
+
+    /**
+     * Adds an event task to the task list associated with the user
+     * @param user User
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processEventAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        outputMessages.add("Got it. I've added this event:");
+        Task createdTask = createTask(
+                Action.EVENT,
+                actionStringTokens.subList(1, actionStringTokens.size())
+        );
+        user.addTask(createdTask);
+        outputMessages.add(createdTask.getTaskInformation());
+        outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
+    }
+
+    /**
+     * Adds a deadline task to the task list associated with the user
+     * @param user User
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processDeadlineAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        outputMessages.add("Got it. I've added this deadline:");
+        Task createdTask = createTask(
+                Action.DEADLINE,
+                actionStringTokens.subList(1, actionStringTokens.size())
+        );
+        user.addTask(createdTask);
+        outputMessages.add(createdTask.getTaskInformation());
+        outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
+    }
+
+    /**
+     * Adds a todo task to the task list associated with the user
+     * @param user User
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processToDoAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        outputMessages.add("Got it. I've added this todo task:");
+        Task createdTask = createTask(
+                Action.TODO,
+                actionStringTokens.subList(1, actionStringTokens.size())
+        );
+        user.addTask(createdTask);
+        outputMessages.add(createdTask.getTaskInformation());
+        outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
+    }
+
+    /**
+     * Unmarks a task status
+     * @param user User
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processUnmarkAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        outputMessages.add("OK, I've marked this task as not done yet:");
+        outputMessages.add(user.markTaskAsNotDone(parseInt(actionStringTokens.get(1)) - 1));
+    }
+
+    /**
+     * Marks a task status
+     * @param user User
+     * @param actionStringTokens List of inputs provided by the user, split by *space*
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processMarkAction(User user, List<String> actionStringTokens, List<String> outputMessages) {
+        outputMessages.add("Nice! I've marked this task as done:");
+        outputMessages.add(user.markTaskAsDone(parseInt(actionStringTokens.get(1)) - 1));
+    }
+
+    /**
+     * Add the user's task list to outputMessages
+     * @param user User
+     * @param outputMessages List of Strings that will be shown to the user
+     */
+    private void processListAction(User user, List<String> outputMessages) {
+        outputMessages.add("Here are the tasks in your list: ");
+        outputMessages.add(user.getTaskList());
+    }
+
+    /**
+     * Writes the user's current task list into memory
+     * @param user User
+     * @param isAppend boolean that indicates if we should append the data of rewrite the file
+     * @throws IOException When the file does not exist
+     */
+    private void updateSaveFile(User user, boolean isAppend) throws IOException {
+        try {
+            DataHandler.writeFile(user.getDataFilePath(), user.createSaveData(), isAppend);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Adds a cheer message to outputMessages
+     * @return String of cheer message
+     * @throws IOException when the file containing the cheer messages does not exist
+     */
     private String getCheerMessage() throws IOException{
         List<String> cheerMessages = DataHandler.readFile(DataHandler.cheerPath);
         return cheerMessages.get(randomGenerator.nextInt(cheerMessages.size()));
