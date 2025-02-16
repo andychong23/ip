@@ -1,7 +1,9 @@
 package bob;
 
 import action.ActionHandler;
+import io.InputValidator;
 import io.UI;
+import io.ValidationToken;
 import user.User;
 
 import java.io.IOException;
@@ -11,36 +13,37 @@ import java.util.List;
  * Chatbot class
  */
 public class Bob {
-    private final String CHATBOT_NAME = "Bob";
+    private static final String CHATBOT_NAME = "Bob";
+    private final UI uI = new UI(Bob.getCHATBOT_NAME());
+    private User user;
+    private final ActionHandler actionHandler = new ActionHandler();
 
-    public static void main(String[] args) throws IOException {
-        // initial setup
-        Bob bob = new Bob();
-        UI uI = new UI(bob.getCHATBOT_NAME());
-        User user = new User("bob");
-        ActionHandler actionHandler = new ActionHandler();
-        List<String> outputMessages;
-
-        uI.displayWelcomeMessage();
-
-        while (true) {
-            String userInput = uI.getValidUserInput(user);
-
-            outputMessages = actionHandler.processEvent(userInput, user);
-
-            if (outputMessages.isEmpty()) {
-                uI.displayExitMessage();
-                break;
-            }
-
-            uI.displayMessageWithDivider(outputMessages);
-        }
-
+    public Bob() throws IOException {
+        user = new User("bob");
     }
 
-    public String getCHATBOT_NAME() {
+    public Bob(String userName) throws IOException {
+        user = new User(userName);
+    }
+
+    public static String getCHATBOT_NAME() {
         return CHATBOT_NAME;
     }
 
+    public String getWelcomeMessage() {
+        return String.join(" ", uI.getWelcomeMessage());
+    }
 
+    public String getExitMessage() {
+        return String.join(" ", uI.getExitMessage());
+    }
+
+    public String parseInput(String input) throws IOException {
+        ValidationToken validationToken = InputValidator.isInputValid(input, user);
+        if (validationToken.isValid()) {
+            return String.join("\n", actionHandler.processEvent(input, user));
+        } else {
+            return validationToken.getErrorMessage();
+        }
+    }
 }
