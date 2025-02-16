@@ -30,11 +30,11 @@ public class Bob {
         return CHATBOT_NAME;
     }
 
-    public String getWelcomeMessage() throws IOException {
+    public String getWelcomeMessage() {
         return String.join(" ", uI.getWelcomeMessage());
     }
 
-    public String getExitMessage() throws IOException {
+    public String getExitMessage() {
         return String.join(" ", uI.getExitMessage());
     }
 
