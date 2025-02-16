@@ -10,14 +10,20 @@ import java.util.List;
  * UI class to handle tasks related to the User Interface
  */
 public class UI {
-    private final Input INPUT = new Input();
-    private final Output OUTPUT = new Output();
+    private Input INPUT;
+    private Output OUTPUT;
     private final String DIVIDER = "_______________";
     private final String CHATBOT_NAME;
 
     /**
      * Constructor
      */
+    public UI(String botName, Input input, Output output) {
+        this.CHATBOT_NAME = botName;
+        this.INPUT = input;
+        this.OUTPUT = output;
+    }
+
     public UI(String botName) {
         this.CHATBOT_NAME = botName;
     }
@@ -95,5 +101,18 @@ public class UI {
         exitMessages.add("Bye. Hope to see you again soon!");
         exitMessages.add(this.DIVIDER);
         OUTPUT.printOutput(exitMessages, "\n", "\n");
+    }
+
+    public List<String> getWelcomeMessage() throws IOException {
+        List<String> welcomeMessages = new ArrayList<>();
+        welcomeMessages.add(String.format("Hello! I'm %s", this.CHATBOT_NAME));
+        welcomeMessages.add("What can I do for you?");
+        return welcomeMessages;
+    }
+
+    public List<String> getExitMessage() throws IOException {
+        List<String> exitMessages = new ArrayList<>();
+        exitMessages.add("Bye. Hope to see you again soon!");
+        return exitMessages;
     }
 }
