@@ -10,6 +10,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import bob.Bob;
+
+import java.io.IOException;
+
 public class BobWindow extends AnchorPane {
     private ScrollPane scrollPane;
     private VBox vBox;
@@ -18,18 +22,56 @@ public class BobWindow extends AnchorPane {
     private Button button;
     private Image bobImage = new Image(this.getClass().getResourceAsStream("/images/bob.jpg"));
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/gru.jpg"));
+    private Bob bob;
 
-    public BobWindow(double minHeight, double minWidth) {
+    public BobWindow(double minHeight, double minWidth) throws IOException {
         setDefaultWindow(minHeight, minWidth);
 
+        bob = new Bob();
+
+        handleUserLogIn();
+
         this.setOnKeyPressed((event) -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                handleEnter();
+            if (event.getCode() == KeyCode.ENTER && textField.getText().equalsIgnoreCase("bye")) {
+                try {
+                    handleExit();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (event.getCode() == KeyCode.ENTER) {
+                try {
+                    handleEnter();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
+
         this.button.setOnAction((event) -> {
-            handleButtonClick();
+            try {
+                handleButtonClick();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
+
+    }
+
+    private void handleExit() throws IOException {
+        DialogBox userDialog = DialogBox.createUserDialogBox(userImage, textField.getText());
+        DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.getExitMessage());
+
+        userDialog.setAlignment(Pos.CENTER_RIGHT);
+        bobDialog.setAlignment(Pos.CENTER_LEFT);
+
+        vBox.getChildren().addAll(userDialog, bobDialog);
+        textField.clear();
+    }
+
+    private void handleUserLogIn() throws IOException {
+        DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.getWelcomeMessage());
+        bobDialog.setAlignment(Pos.CENTER_LEFT);
+        vBox.getChildren().add(bobDialog);
     }
 
     private void setDefaultWindow(double minHeight, double minWidth) {
@@ -52,8 +94,10 @@ public class BobWindow extends AnchorPane {
         setDefaultScrollPane(scrollPane);
         setDefaultTextField(textField);
         setTopAnchor(scrollPane, 0.0);
-        setBottomAnchor(hBox, 0.0);
+        setBottomAnchor(hBox, 5.0);
         setDefaultVBox(vBox);
+
+        scrollPane.setPrefHeight(this.getPrefHeight() * 0.95);
 
         this.getChildren().addAll(scrollPane, hBox);
     }
@@ -63,7 +107,7 @@ public class BobWindow extends AnchorPane {
     }
 
     private void setDefaultScrollPane(ScrollPane scrollPane) {
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPrefSize(this.getPrefWidth(), this.getPrefHeight());
         scrollPane.vvalueProperty().bind(vBox.heightProperty());
@@ -73,13 +117,13 @@ public class BobWindow extends AnchorPane {
         textField.setPromptText("Input your request here");
     }
 
-    private void handleEnter() {
+    private void handleEnter() throws IOException {
         handleButtonClick();
     }
 
-    private void handleButtonClick() {
+    private void handleButtonClick() throws IOException {
         DialogBox userDialog = DialogBox.createUserDialogBox(userImage, textField.getText());
-        DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, "this is a test");
+        DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.parseInput(textField.getText()));
 
         userDialog.setAlignment(Pos.CENTER_RIGHT);
         bobDialog.setAlignment(Pos.CENTER_LEFT);
