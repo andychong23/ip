@@ -103,14 +103,14 @@ public class UI {
         OUTPUT.printOutput(exitMessages, "\n", "\n");
     }
 
-    public List<String> getWelcomeMessage() throws IOException {
+    public List<String> getWelcomeMessage() {
         List<String> welcomeMessages = new ArrayList<>();
         welcomeMessages.add(String.format("Hello! I'm %s", this.CHATBOT_NAME));
         welcomeMessages.add("What can I do for you?");
         return welcomeMessages;
     }
 
-    public List<String> getExitMessage() throws IOException {
+    public List<String> getExitMessage() {
         List<String> exitMessages = new ArrayList<>();
         exitMessages.add("Bye. Hope to see you again soon!");
         return exitMessages;
