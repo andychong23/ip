@@ -1,11 +1,13 @@
 package gui;
 
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,32 +34,34 @@ public class BobWindow extends AnchorPane {
         handleUserLogIn();
 
         this.setOnKeyPressed((event) -> {
-            if (event.getCode() == KeyCode.ENTER && textField.getText().equalsIgnoreCase("bye")) {
-                try {
-                    handleExit();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } else if (event.getCode() == KeyCode.ENTER) {
-                try {
-                    handleEnter();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (isExit(event)) {
+                handleExit();
+            } else if (isEnter(event)) {
+                handleEnter();
             }
         });
 
         this.button.setOnAction((event) -> {
-            try {
-                handleButtonClick();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            handleButtonClick();
         });
 
     }
 
-    private void handleExit() throws IOException {
+    private boolean isExit(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER && textField.getText().equalsIgnoreCase("bye")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEnter(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            return true;
+        }
+        return false;
+    }
+
+    private void handleExit() {
         DialogBox userDialog = DialogBox.createUserDialogBox(userImage, textField.getText());
         DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.getExitMessage());
 
@@ -66,9 +70,15 @@ public class BobWindow extends AnchorPane {
 
         vBox.getChildren().addAll(userDialog, bobDialog);
         textField.clear();
+
+        textField.setEditable(false);
+        button.setDisable(true);
+
+        // make it such that user cannot provide any more functionality after saying bye
+        setOnKeyPressed((event) -> {});
     }
 
-    private void handleUserLogIn() throws IOException {
+    private void handleUserLogIn() {
         DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.getWelcomeMessage());
         bobDialog.setAlignment(Pos.CENTER_LEFT);
         vBox.getChildren().add(bobDialog);
@@ -117,13 +127,22 @@ public class BobWindow extends AnchorPane {
         textField.setPromptText("Input your request here");
     }
 
-    private void handleEnter() throws IOException {
+    private void handleEnter() {
         handleButtonClick();
     }
 
-    private void handleButtonClick() throws IOException {
-        DialogBox userDialog = DialogBox.createUserDialogBox(userImage, textField.getText());
-        DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.parseInput(textField.getText()));
+    private void handleButtonClick() {
+        DialogBox userDialog;
+        DialogBox bobDialog;
+
+        userDialog = DialogBox.createUserDialogBox(userImage, textField.getText());
+
+        try {
+            bobDialog = DialogBox.createBobDialogBox(bobImage, bob.parseInput(textField.getText()));
+        } catch (Exception e) {
+
+            bobDialog = DialogBox.createBobDialogBox(bobImage, "An error occurred, please try again");
+        }
 
         userDialog.setAlignment(Pos.CENTER_RIGHT);
         bobDialog.setAlignment(Pos.CENTER_LEFT);
