@@ -41,7 +41,7 @@ public class Bob {
     public String parseInput(String input) throws IOException {
         ValidationToken validationToken = InputValidator.isInputValid(input, user);
         if (validationToken.isValid()) {
-            return String.join("\n", actionHandler.processEvent(input, user));
+            return String.join("\n", actionHandler.processAction(input, user));
         } else {
             return validationToken.getErrorMessage();
         }
