@@ -48,9 +48,25 @@ public class InputValidator {
             return isFindInputValid(userInputTokens);
         } else if (userInputTokens.getFirst().equalsIgnoreCase(ActionHandler.Action.CHEER.toString())) {
             return isCheerInputValid(userInputTokens);
+        } else if (userInputTokens.getFirst().equalsIgnoreCase(ActionHandler.Action.HELP.toString())) {
+            return isHelpInputValid(userInputTokens);
+        }
+        return new ValidationToken(false, ValidationToken.InputError.INVALID_COMMAND);
+    }
+
+    private static ValidationToken isHelpInputValid(List<String> userInputTokens) {
+        if (userInputTokens.size() == 1) {
+            return new ValidationToken(true);
         }
 
-        return new ValidationToken(false, ValidationToken.InputError.INVALID_COMMAND);
+        if (userInputTokens.size() > 2) {
+            return new ValidationToken(false, ValidationToken.InputError.HELP_TOO_MANY_ARGUMENTS);
+        }
+
+        if (ActionHandler.Action.mapAction(userInputTokens.get(1)).equals(ActionHandler.Action.DEFAULT)) {
+            return new ValidationToken(false, ValidationToken.InputError.HELP_UNKNOWN_COMMAND);
+        }
+        return new ValidationToken(true);
     }
 
     private static ValidationToken isCheerInputValid(List<String> userInputTokens) {
