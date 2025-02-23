@@ -117,6 +117,7 @@ public class ActionHandler {
                 actionStringTokens.subList(1, actionStringTokens.size())
         );
         user.addTask(createdTask);
+        assert createdTask != null;
         outputMessages.add(createdTask.getTaskInformation());
         outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
     }
@@ -134,6 +135,7 @@ public class ActionHandler {
                 actionStringTokens.subList(1, actionStringTokens.size())
         );
         user.addTask(createdTask);
+        assert createdTask != null;
         outputMessages.add(createdTask.getTaskInformation());
         outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
     }
@@ -151,6 +153,7 @@ public class ActionHandler {
                 actionStringTokens.subList(1, actionStringTokens.size())
         );
         user.addTask(createdTask);
+        assert createdTask != null;
         outputMessages.add(createdTask.getTaskInformation());
         outputMessages.add("Now you have %s tasks in your list".formatted(user.getNumberOfTasks()));
     }
