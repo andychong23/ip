@@ -54,11 +54,28 @@ public class ActionHandler {
             processFindAction(user, actionStringTokens, outputMessages);
         } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.CHEER.toString())) {
             processCheerAction(outputMessages);
+        } else if (actionStringTokens.getFirst().equalsIgnoreCase(Action.HELP.toString())) {
+            processHelpAction(actionStringTokens, outputMessages);
         }
 
         updateSaveFile(user, false);
 
         return outputMessages;
+    }
+
+    private void processHelpAction(List<String> actionStringTokens, List<String> outputMessages) {
+        if (actionStringTokens.size() == 1) {
+            outputMessages.add("List of commands that can be used: ");
+            for (Action action : Action.values()) {
+                if (action != Action.DEFAULT) {
+                    outputMessages.add("\t%s".formatted(action.toString().toLowerCase()));
+                }
+            }
+        } else {
+            String actionCommandToHelp = actionStringTokens.get(1);
+            Action action = Action.mapAction(actionCommandToHelp);
+            outputMessages.add("%s".formatted(action.getHelpMessage()));
+        }
     }
 
     /**
@@ -256,16 +273,120 @@ public class ActionHandler {
     }
 
     public enum Action {
-        LIST,
-        MARK,
-        UNMARK,
-        BYE,
-        TODO,
-        DEADLINE,
-        EVENT,
-        DELETE,
-        FIND,
-        CHEER,
-        DEFAULT
+        LIST {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\tlist";
+            }
+        },
+        MARK {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\tmark <task_number>";
+            }
+        },
+        UNMARK {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\tmark <task_number>";
+            }
+        },
+        BYE {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\tbye";
+            }
+        },
+        TODO {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t todo <task_information>";
+            }
+        },
+        DEADLINE {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t deadline <task_information> /by <deadline>";
+            }
+        },
+        EVENT {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t event <task_information> /from <start_date> /to <end_date>";
+            }
+        },
+        DELETE {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t delete <task_number>";
+            }
+        },
+        FIND {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t find <string_to_find>";
+            }
+        },
+        CHEER {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t cheer";
+            }
+        },
+        HELP {
+            @Override
+            public String getHelpMessage() {
+                return "Usage of command: \n\t help [command_name]";
+            }
+        },
+        DEFAULT {
+            @Override
+            public String getHelpMessage() {
+                return "Unknown command";
+            }
+        };
+
+        public abstract String getHelpMessage();
+
+        public static Action mapAction(String actionString) {
+            switch (actionString.toLowerCase()) {
+            case "list" -> {
+                return Action.LIST;
+            }
+            case "mark" -> {
+                return Action.MARK;
+            }
+            case "unmark" -> {
+                return Action.UNMARK;
+            }
+            case "bye" -> {
+                return Action.BYE;
+            }
+            case "todo" -> {
+                return Action.TODO;
+            }
+            case "deadline" -> {
+                return Action.DEADLINE;
+            }
+            case "event" -> {
+                return Action.EVENT;
+            }
+            case "delete" -> {
+                return Action.DELETE;
+            }
+            case "find" -> {
+                return Action.FIND;
+            }
+            case "cheer" -> {
+                return Action.CHEER;
+            }
+            case "help" -> {
+                return Action.HELP;
+            }
+            default -> {
+                return Action.DEFAULT;
+            }
+            }
+        }
     }
 }
