@@ -179,6 +179,18 @@ public class ValidationToken {
             public String getErrorMessage() {
                 return "cheer expects 0 argument but received at least 1 argument";
             }
+        },
+        HELP_TOO_MANY_ARGUMENTS() {
+            @Override
+            public String getErrorMessage() {
+                return "help expects 1 argument but received more than 1 argument";
+            }
+        },
+        HELP_UNKNOWN_COMMAND() {
+            @Override
+            public String getErrorMessage() {
+                return "Unknown command provided into help";
+            }
         };
 
         public abstract String getErrorMessage();
