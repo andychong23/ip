@@ -31,14 +31,14 @@ public class User {
     public User(String userName) throws IOException {
         this.taskList = new ArrayList<>();
         this.dataFilePath = DataHandler.programRoot.resolve("data").resolve("%s.txt".formatted(userName));
-        buildTaskList(DataHandler.readFile(dataFilePath));
+        buildSavedTaskList(DataHandler.readFile(dataFilePath));
     }
 
     /**
      * Method to build the taskList from the input data
      * @param inputDataList List of String where each entry is the save information for a task
      */
-    private void buildTaskList(List<String> inputDataList) {
+    private void buildSavedTaskList(List<String> inputDataList) {
         for (String inputData : inputDataList) {
             // Added escape character for | as "|" is considered as an or operator in regex
             List<String> data = List.of(inputData.split("\\%s".formatted(DataHandler.saveDelimiter)));
@@ -70,29 +70,22 @@ public class User {
      * @return String that represents the task list currently
      */
     public String getTaskList() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
-            stringBuilder.append("%s. %s".formatted(
-                    i + 1,
-                    task.getTaskInformation())
-            );
-            if (i != taskList.size() - 1) {
-                stringBuilder.append("\n");
-            }
-        }
-        return stringBuilder.toString();
+        return buildTaskList(taskList);
     }
 
     public String getTaskList(List<Task> taskList) {
+        return buildTaskList(taskList);
+    }
+
+    private String buildTaskList(List<Task> inputDataList) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
+        for (int i = 0; i < inputDataList.size(); i++) {
+            Task task = inputDataList.get(i);
             stringBuilder.append("%s. %s".formatted(
                     i + 1,
                     task.getTaskInformation())
             );
-            if (i != taskList.size() - 1) {
+            if (i != inputDataList.size() - 1) {
                 stringBuilder.append("\n");
             }
         }
