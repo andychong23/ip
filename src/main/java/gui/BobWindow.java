@@ -47,6 +47,12 @@ public class BobWindow extends AnchorPane {
 
     }
 
+    public void setSize(double width, double height) {
+        scrollPane.setPrefSize(width, height);
+        vBox.setPrefSize(width, height);
+        hBox.setPrefWidth(width);
+    }
+
     private boolean isExit(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && textField.getText().equalsIgnoreCase("bye")) {
             return true;
@@ -104,6 +110,12 @@ public class BobWindow extends AnchorPane {
         setDefaultScrollPane(scrollPane);
         setDefaultTextField(textField);
         setTopAnchor(scrollPane, 0.0);
+        setRightAnchor(scrollPane, 0.0);
+        setLeftAnchor(scrollPane, 0.0);
+        setBottomAnchor(scrollPane, hBox.getHeight() + 5.0);
+
+        setLeftAnchor(hBox, 0.0);
+        setRightAnchor(hBox, 0.0);
         setBottomAnchor(hBox, 5.0);
         setDefaultVBox(vBox);
 
