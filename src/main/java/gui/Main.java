@@ -17,8 +17,7 @@ public class Main extends Application{
         stage.setTitle("Bob");
         Scene scene = new Scene(anchorPane);
         anchorPane.setMinSize(scene.getWidth(), scene.getHeight());
-        scene.setOnDragDone((event) -> {
-            anchorPane.setMinSize(scene.getWidth(), scene.getHeight());
+        scene.setOnMouseDragExited((event) -> {
             anchorPane.setSize(scene.getWidth(), scene.getHeight());
         });
         stage.setScene(scene);
