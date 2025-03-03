@@ -97,6 +97,8 @@ public class BobWindow extends AnchorPane {
         vBox = new VBox();
 
         scrollPane.setContent(vBox);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
 
         hBox = new HBox();
         textField = new TextField();
@@ -112,14 +114,12 @@ public class BobWindow extends AnchorPane {
         setTopAnchor(scrollPane, 0.0);
         setRightAnchor(scrollPane, 0.0);
         setLeftAnchor(scrollPane, 0.0);
-        setBottomAnchor(scrollPane, hBox.getHeight() + 5.0);
 
         setLeftAnchor(hBox, 0.0);
         setRightAnchor(hBox, 0.0);
         setBottomAnchor(hBox, 5.0);
         setDefaultVBox(vBox);
 
-        scrollPane.setPrefHeight(this.getPrefHeight() * 0.95);
 
         this.getChildren().addAll(scrollPane, hBox);
     }
