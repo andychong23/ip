@@ -20,7 +20,7 @@ import static java.lang.Integer.parseInt;
  * Class to handle actions
  */
 public class ActionHandler {
-    private RandomGenerator randomGenerator = new Random();
+    private final RandomGenerator RANDOOM_GENERATOR = new Random();
 
     /**
      * Returns List of Strings that will be output to the user
@@ -63,6 +63,11 @@ public class ActionHandler {
         return outputMessages;
     }
 
+    /**
+     * Method to process help action
+     * @param actionStringTokens Tokens of user inputs
+     * @param outputMessages List of String to output to user
+     */
     private void processHelpAction(List<String> actionStringTokens, List<String> outputMessages) {
         if (actionStringTokens.size() == 1) {
             outputMessages.add("List of commands that can be used: ");
@@ -227,7 +232,7 @@ public class ActionHandler {
      */
     private String getCheerMessage() {
         List<String> cheerMessages = DataHandler.getSavedCheerMessages();
-        return cheerMessages.get(randomGenerator.nextInt(cheerMessages.size()));
+        return cheerMessages.get(RANDOOM_GENERATOR.nextInt(cheerMessages.size()));
     }
 
     /**
