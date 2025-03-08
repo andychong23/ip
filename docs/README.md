@@ -1,7 +1,7 @@
 # Bob User Guide
 
 Example of Bob: <br>
-!(https://github.com/andychong23/ip/tree/master/docs/Ui.png "Ui Screenshot")
+<img src="https://github.com/andychong23/ip/tree/master/docs/Ui.png">
 
 // Product intro goes here
 Have you ever gone crazy about keeping track of your todos, deadlines and events?
