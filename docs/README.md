@@ -85,6 +85,14 @@ With this command, you can list all the tasks, deadlines and events that you are
 
 List command usage : `list`
 
+## Help
+If you ever forget what are the commands, you can always call the help command to get all the available commands. If you
+forget what parameters are needed for each command, you can also call the help command.
+
+Help command usage : `help` / `help <command_name>`
+
+Example usage: `help` / `help deadline`
+
 ## Bye
 With this command, you will say goodbye to Bob and Bob will leave you D:
 
