@@ -42,6 +42,7 @@ public class BobWindow extends AnchorPane {
         handleUserLogIn();
 
         this.setOnKeyPressed((event) -> {
+            scrollPane.setPrefHeight(this.getHeight() - hBox.getHeight() - hBoxOffset);
             if (isExit(event)) {
                 handleExit();
             } else if (isEnter(event)) {
@@ -50,6 +51,7 @@ public class BobWindow extends AnchorPane {
         });
 
         this.button.setOnAction((event) -> {
+            scrollPane.setPrefHeight(this.getHeight() - hBox.getHeight() - hBoxOffset);
             handleButtonClick();
         });
 
@@ -131,8 +133,6 @@ public class BobWindow extends AnchorPane {
         vBox = new VBox();
 
         scrollPane.setContent(vBox);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
 
         hBox = new HBox();
         textField = new TextField();
@@ -173,7 +173,7 @@ public class BobWindow extends AnchorPane {
     private void setDefaultScrollPane(ScrollPane scrollPane) {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setPrefSize(this.getPrefWidth(), this.getPrefHeight());
+        scrollPane.setFitToWidth(true);
         scrollPane.vvalueProperty().bind(vBox.heightProperty());
     }
 
