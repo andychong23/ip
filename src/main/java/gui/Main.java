@@ -23,7 +23,7 @@ public class Main extends Application{
         stage.heightProperty().addListener((observable, oldValue, newValue) -> {
             anchorPane.setMinHeight(newValue.doubleValue());
         });
-
+        stage.setResizable(true);
         stage.setScene(scene);
         stage.show();
     }
