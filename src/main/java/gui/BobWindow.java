@@ -1,6 +1,5 @@
 package gui;
 
-import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -29,6 +28,12 @@ public class BobWindow extends AnchorPane {
     private final double buttonScale = 0.2;
     private Bob bob;
 
+    /**
+     * Constructor
+     * @param minHeight Min height of the starting pane
+     * @param minWidth Min width of the starting pane
+     * @throws IOException When Bob object is failed to be created
+     */
     public BobWindow(double minHeight, double minWidth) throws IOException {
         setDefaultWindow(minHeight, minWidth);
 
@@ -61,12 +66,11 @@ public class BobWindow extends AnchorPane {
 
     }
 
-    public void setSize(double width, double height) {
-        scrollPane.setPrefSize(width, height);
-        vBox.setPrefSize(width, height);
-        hBox.setPrefWidth(width);
-    }
-
+    /**
+     * Checks if textField contains bye to indicate that the program has ended
+     * @param event KeyEvent that symbolises what key is being pressed
+     * @return boolean to indicate if isExit
+     */
     private boolean isExit(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && textField.getText().equalsIgnoreCase("bye")) {
             return true;
@@ -74,6 +78,11 @@ public class BobWindow extends AnchorPane {
         return false;
     }
 
+    /**
+     * Checks if the user uses the enter key
+     * @param event KeyEvent that symbolises what key is being pressed
+     * @return boolean to indicate if the enter key is pressed
+     */
     private boolean isEnter(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             return true;
@@ -81,6 +90,9 @@ public class BobWindow extends AnchorPane {
         return false;
     }
 
+    /**
+     * Method to encapsulate all the tasks needed to be done when the user exits the program or when they input bye
+     */
     private void handleExit() {
         DialogBox userDialog = DialogBox.createUserDialogBox(userImage, textField.getText());
         DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.getExitMessage());
@@ -98,12 +110,20 @@ public class BobWindow extends AnchorPane {
         setOnKeyPressed((event) -> {});
     }
 
+    /**
+     * Method to handle all the required set-up to welcome the user
+     */
     private void handleUserLogIn() {
         DialogBox bobDialog = DialogBox.createBobDialogBox(bobImage, bob.getWelcomeMessage());
         bobDialog.setAlignment(Pos.CENTER_LEFT);
         vBox.getChildren().add(bobDialog);
     }
 
+    /**
+     * Method to initialise all the height and widths of the objects in the window
+     * @param minHeight Min height of the pane
+     * @param minWidth Min widht of the pane
+     */
     private void setDefaultWindow(double minHeight, double minWidth) {
         this.setPrefSize(minWidth, minHeight);
 
@@ -138,10 +158,18 @@ public class BobWindow extends AnchorPane {
         this.getChildren().addAll(scrollPane, hBox);
     }
 
+    /**
+     * Sets the default size for vBox
+     * @param vBox VBox object
+     */
     private void setDefaultVBox(VBox vBox) {
         vBox.setPrefWidth(scrollPane.getPrefWidth());
     }
 
+    /**
+     * Sets the default functionality for the ScrollPane
+     * @param scrollPane ScrollPane object to be set
+     */
     private void setDefaultScrollPane(ScrollPane scrollPane) {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -149,14 +177,24 @@ public class BobWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(vBox.heightProperty());
     }
 
+    /**
+     * Set the default functionality of the TextField
+     * @param textField TextField object to be set
+     */
     private void setDefaultTextField(TextField textField) {
         textField.setPromptText("Input your request here");
     }
 
+    /**
+     * Method to ensure that enter is being handled the same way as a mouse click is
+     */
     private void handleEnter() {
         handleButtonClick();
     }
 
+    /**
+     * Method to handle a button click
+     */
     private void handleButtonClick() {
         DialogBox userDialog;
         DialogBox bobDialog;
