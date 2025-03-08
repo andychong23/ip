@@ -13,9 +13,17 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) throws IOException {
-        AnchorPane anchorPane = new BobWindow(minHeight, minWidth);
+        BobWindow anchorPane = new BobWindow(minHeight, minWidth);
         stage.setTitle("Bob");
         Scene scene = new Scene(anchorPane);
+        anchorPane.setMinSize(scene.getWidth(), scene.getHeight());
+        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            anchorPane.setMinWidth(newValue.doubleValue());
+        });
+        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            anchorPane.setMinHeight(newValue.doubleValue());
+        });
+
         stage.setScene(scene);
         stage.show();
     }
