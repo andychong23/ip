@@ -1,9 +1,8 @@
 # Bob User Guide
 
 Example of Bob: <br>
-<img src="https://github.com/andychong23/ip/tree/master/docs/Ui.png">
+![Ui](https://github.com/andychong23/ip/tree/master/docs/Ui.png"/)
 
-// Product intro goes here
 Have you ever gone crazy about keeping track of your todos, deadlines and events?
 Fret not! Bob is here to help you. Similar to how Bob helps Gru, Bob can help you to solve your problems. 
 Let Bob keep track of your todos, deadlines and events for you.
