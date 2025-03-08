@@ -24,6 +24,9 @@ public class BobWindow extends AnchorPane {
     private Button button;
     private Image bobImage = new Image(this.getClass().getResourceAsStream("/images/bob.jpg"));
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/gru.jpg"));
+    private final double hBoxOffset = 1.0;
+    private final double textFieldScale = 0.8;
+    private final double buttonScale = 0.2;
     private Bob bob;
 
     public BobWindow(double minHeight, double minWidth) throws IOException {
@@ -43,6 +46,17 @@ public class BobWindow extends AnchorPane {
 
         this.button.setOnAction((event) -> {
             handleButtonClick();
+        });
+
+        this.widthProperty().addListener((observable, oldValue, newValue) -> {
+            scrollPane.setPrefWidth(newValue.doubleValue());
+            hBox.setPrefWidth(newValue.doubleValue());
+            textField.setPrefWidth(hBox.getPrefWidth() * textFieldScale);
+            button.setPrefWidth(hBox.getPrefWidth() * buttonScale);
+        });
+
+        this.heightProperty().addListener((observable, oldValue, newValue) -> {
+            scrollPane.setPrefHeight(newValue.doubleValue() - hBox.getHeight() - hBoxOffset);
         });
 
     }
@@ -106,8 +120,8 @@ public class BobWindow extends AnchorPane {
 
         hBox.getChildren().addAll(textField, button);
         hBox.setPrefWidth(this.getPrefWidth());
-        textField.setPrefWidth(hBox.getPrefWidth() * 0.8);
-        button.setPrefWidth(hBox.getPrefWidth() * 0.2);
+        textField.setPrefWidth(hBox.getPrefWidth() * textFieldScale);
+        button.setPrefWidth(hBox.getPrefWidth() * buttonScale);
 
         setDefaultScrollPane(scrollPane);
         setDefaultTextField(textField);
@@ -117,7 +131,7 @@ public class BobWindow extends AnchorPane {
 
         setLeftAnchor(hBox, 0.0);
         setRightAnchor(hBox, 0.0);
-        setBottomAnchor(hBox, 5.0);
+        setBottomAnchor(hBox, hBoxOffset);
         setDefaultVBox(vBox);
 
 
