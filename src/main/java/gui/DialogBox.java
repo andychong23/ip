@@ -2,6 +2,7 @@ package gui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -43,6 +44,7 @@ public class DialogBox extends HBox {
      */
     private void setLabelProperty(Label label) {
         label.setWrapText(true);
+        label.setPadding(new Insets(0, 5, 0, 5));
     }
 
     /**

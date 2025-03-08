@@ -165,7 +165,7 @@ public class ValidationToken {
         INVALID_COMMAND {
             @Override
             public String getErrorMessage() {
-                return "command listed does not exists. use todo, mark, unmark, deadline, event, delete and find instead";
+                return "command listed does not exists. use todo, mark, unmark, deadline, event, delete, find and help instead";
             }
         },
         FIND_TOO_LITTLE_ARGUMENTS() {

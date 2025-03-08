@@ -54,6 +54,11 @@ public class InputValidator {
         return new ValidationToken(false, ValidationToken.InputError.INVALID_COMMAND);
     }
 
+    /**
+     * Method to check if help command is correctly provided
+     * @param userInputTokens List of String containing user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isHelpInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(true);
@@ -69,6 +74,11 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if the cheer command is correctly provided
+     * @param userInputTokens List of String containing the user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isCheerInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() >= 2) {
             return new ValidationToken(false, ValidationToken.InputError.CHEER_TOO_MANY_ARGUMENTS);
@@ -76,6 +86,11 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if the find command is correctly provided
+     * @param userInputTokens List of String containing the user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isFindInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(false, ValidationToken.InputError.FIND_TOO_LITTLE_ARGUMENTS);
@@ -83,6 +98,12 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if the delete command is correctly provided
+     * @param userInputTokens List of String containing the user inputs
+     * @param user User object
+     * @return ValidationToken object
+     */
     private static ValidationToken isDeleteInputValid(List<String> userInputTokens, User user) {
         if (userInputTokens.size() > 2) {
             // too many arguments
@@ -103,6 +124,11 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if event command is correctly provided
+     * @param userInputTokens List of String containing the user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isEventInputValid(List<String> userInputTokens) {
         if (!(userInputTokens.contains("/from") && userInputTokens.contains("/to"))) {
             return new ValidationToken(false, ValidationToken.InputError.EVENT_MISSING_FROM_TO_ARGUMENTS);
@@ -133,6 +159,11 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if deadline command is correctly provided
+     * @param userInputTokens List of String containing the user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isDeadLineInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() <= 2) {
             return new ValidationToken(false, ValidationToken.InputError.DEADLINE_TOO_LITTLE_ARGUMENTS);
@@ -159,6 +190,11 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if todo command is correct
+     * @param userInputTokens List of String containing the user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isToDoInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(false, ValidationToken.InputError.TODO_TOO_LITTLE_ARGUMENTS);
@@ -167,6 +203,12 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if unmark command is correct
+     * @param userInputTokens List of String containing the user inputs
+     * @param user User object
+     * @return ValidationToken object
+     */
     private static ValidationToken isUnmarkInputValid(List<String> userInputTokens, User user) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(false, ValidationToken.InputError.UNMARK_TOO_LITTLE_ARGUMENTS);
@@ -188,6 +230,12 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if mark command is correct
+     * @param userInputTokens List of String containing the user inputs
+     * @param user User object
+     * @return ValidationToken object
+     */
     private static ValidationToken isMarkInputValid(List<String> userInputTokens, User user) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(false, ValidationToken.InputError.MARK_TOO_LITTLE_ARGUMENTS);
@@ -209,6 +257,11 @@ public class InputValidator {
         return new ValidationToken(true);
     }
 
+    /**
+     * Method to check if bye command is correct
+     * @param userInputTokens List of String of user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isByeInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(true);
@@ -216,6 +269,11 @@ public class InputValidator {
         return new ValidationToken(false, ValidationToken.InputError.BYE_TOO_MANY_ARGUMENTS);
     }
 
+    /**
+     * Method to check if list command is correct
+     * @param userInputTokens List of String of user inputs
+     * @return ValidationToken object
+     */
     private static ValidationToken isListInputValid(List<String> userInputTokens) {
         if (userInputTokens.size() == 1) {
             return new ValidationToken(true);
