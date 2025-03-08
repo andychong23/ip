@@ -21,12 +21,12 @@ public class BobWindow extends AnchorPane {
     private HBox hBox;
     private TextField textField;
     private Button button;
-    private Image bobImage = new Image(this.getClass().getResourceAsStream("/images/bob.jpg"));
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/gru.jpg"));
     private final double hBoxOffset = 1.0;
     private final double textFieldScale = 0.8;
     private final double buttonScale = 0.2;
     private Bob bob;
+    public Image bobImage = new Image(this.getClass().getResourceAsStream("/images/bob.jpg"));
+    public Image userImage = new Image(this.getClass().getResourceAsStream("/images/gru.jpg"));
 
     /**
      * Constructor

@@ -2,7 +2,6 @@ package gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +23,8 @@ public class Main extends Application{
             anchorPane.setMinHeight(newValue.doubleValue());
         });
         stage.setResizable(true);
+        stage.getIcons().add(anchorPane.bobImage);
+
         stage.setScene(scene);
         stage.show();
     }
