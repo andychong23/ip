@@ -1,30 +1,91 @@
-# Duke User Guide
+# Bob User Guide
 
-// Update the title above to match the actual product name
-
-// Product screenshot goes here
+Example of Bob: <br>
+!(https://github.com/andychong23/ip/tree/master/docs/Ui.png "Ui Screenshot")
 
 // Product intro goes here
+Have you ever gone crazy about keeping track of your todos, deadlines and events?
+Fret not! Bob is here to help you. Similar to how Bob helps Gru, Bob can help you to solve your problems. 
+Let Bob keep track of your todos, deadlines and events for you.
 
 ## Adding deadlines
 
-// Describe the action and its outcome.
+With this command, you can add a deadline, with its due date of course and the details of the deadline
 
-// Give examples of usage
+Command usage : `deadline <deadline_details> /by <end_datetime/end_date>`
 
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
+Example usage : `deadline submit homework /by 04/04` <br>
+Bob's output:
 ```
-expected output
+Got it. I've added this deadline:
+[D] [ ] submit homework (by: 04 Apr 2025)
+Now you have 1 tasks in your list
 ```
 
-## Feature ABC
+## Adding events
+With this command, you can add an event to track, with the details of the event as well as the start and end date of the event!
 
-// Feature details
+Command usage : `event <event_details> /from <start_datetime/start_date> /to <end_datetime/end_date>`
 
+Example usage : `event networking /from 10/03 /to 14/03 22:00` <br>
+Bob's output:
+```
+Got it. I've added this todo task:
+[T] [ ] grocery shopping
+Now you have 1 tasks in your list
+```
 
-## Feature XYZ
+## Adding todos
+With this command, you can add a todo task, with the details of the todo task
 
-// Feature details
+Command usage : `todo <task_details>`
+
+Example usage : `todo grocery shopping` <br>
+Bob's output:
+```
+Got it. I've added this :
+[D] [ ] submit homework (by: 04 Apr 2025)
+Now you have 1 tasks in your list
+```
+
+## Finding tasks with a specific string
+With this command, you can find todo tasks, deadlines and events that matches the string provided
+
+Command usage : `find <string>`
+
+Example usage : `find home` <br>
+Bob's output:
+```
+Here are the matching tasks in your list:
+1. [D] [ ] submit homework (by: 04 Apr 2025)
+```
+
+## Mark/Unmark tasks
+With this command, you can mark/unmark tasks, deadlines and events to be done
+
+Mark command usage : `mark <task_number>`
+Unmark command usage : `unmark <task_number>`
+
+Example usage : `mark 1` / `unmark 1`
+
+## Cheer
+With this command, you can get a motivation message from Bob when you are feeling down
+
+Cheer command usage : `cheer`
+
+## Deleting tasks
+With this command, you can delete tasks, deadlines and events that you no longer want to track
+
+Delete command usage : `delete <task_number>`
+
+Example usage : `delete 4`
+
+## List
+With this command, you can list all the tasks, deadlines and events that you are tracking
+
+List command usage : `list`
+
+## Bye
+With this command, you will say goodbye to Bob and Bob will leave you D:
+
+Bye command usage : `bye`
