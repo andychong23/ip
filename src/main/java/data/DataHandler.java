@@ -1,12 +1,16 @@
 package data;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.random.RandomGenerator;
@@ -20,14 +24,6 @@ public class DataHandler {
     public static DateTimeFormatter dateSaveFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static DateTimeFormatter dateTimeSaveFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     public static Path cheerPath;
-
-    static {
-        try {
-            cheerPath = Paths.get(DataHandler.class.getResource("/cheer.txt").toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Method to write data to a file
@@ -66,5 +62,13 @@ public class DataHandler {
             Files.createFile(filePath);
         }
         return Files.readAllLines(filePath);
+    }
+
+    public static List<String> getSavedCheerMessages() {
+        InputStream cheerResourceAsStream = DataHandler.class.getResourceAsStream("/cheer.txt");
+        assert cheerResourceAsStream != null;
+        BufferedReader resourceReader = new BufferedReader(new InputStreamReader(cheerResourceAsStream));
+
+        return resourceReader.lines().toList();
     }
 }

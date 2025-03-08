@@ -224,10 +224,9 @@ public class ActionHandler {
     /**
      * Adds a cheer message to outputMessages
      * @return String of cheer message
-     * @throws IOException when the file containing the cheer messages does not exist
      */
-    private String getCheerMessage() throws IOException{
-        List<String> cheerMessages = DataHandler.readFile(DataHandler.cheerPath);
+    private String getCheerMessage() {
+        List<String> cheerMessages = DataHandler.getSavedCheerMessages();
         return cheerMessages.get(randomGenerator.nextInt(cheerMessages.size()));
     }
 
