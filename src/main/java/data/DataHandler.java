@@ -64,6 +64,10 @@ public class DataHandler {
         return Files.readAllLines(filePath);
     }
 
+    /**
+     * Reads the saved cheer resource
+     * @return List of String that contains the cheer messages
+     */
     public static List<String> getSavedCheerMessages() {
         InputStream cheerResourceAsStream = DataHandler.class.getResourceAsStream("/cheer.txt");
         assert cheerResourceAsStream != null;
