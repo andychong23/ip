@@ -17,9 +17,13 @@ public class Main extends Application{
         stage.setTitle("Bob");
         Scene scene = new Scene(anchorPane);
         anchorPane.setMinSize(scene.getWidth(), scene.getHeight());
-        scene.setOnMouseDragExited((event) -> {
-            anchorPane.setSize(scene.getWidth(), scene.getHeight());
+        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            anchorPane.setMinWidth(newValue.doubleValue());
         });
+        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            anchorPane.setMinHeight(newValue.doubleValue());
+        });
+
         stage.setScene(scene);
         stage.show();
     }
